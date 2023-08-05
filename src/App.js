@@ -11,6 +11,13 @@ function App() {
         Integration
       </h1>
       <hr />
+      <GooglePay
+        environment="TEST"
+        paymentRequest={{
+          apiVersion: 2,
+          apiVersionMinor: 0,
+        }}
+      />
     </div>
   );
 }
