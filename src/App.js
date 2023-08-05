@@ -1,17 +1,16 @@
 import logo from "./logo.svg";
 import "./App.css";
-import GooglePay from "@google-pay/button-react";
+import GooglePayButton from "@google-pay/button-react";
 import React from "react";
 
 function App() {
   return (
     <div className="App">
       <h1>
-        <img src={logo} className="App-logo" alt="logo" /> Gpay React
-        Integration
+        <img src={logo} className="App-logo" alt="logo" /> Google Pay React Demo
       </h1>
       <hr />
-      <GooglePay
+      <GooglePayButton
         environment="TEST"
         paymentRequest={{
           apiVersion: 2,
@@ -21,34 +20,45 @@ function App() {
               type: "CARD",
               parameters: {
                 allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-                allowedCardNetworks: ["MASTERCARD", "VISA", "DISCOVER"],
+                allowedCardNetworks: ["MASTERCARD", "VISA"],
               },
               tokenizationSpecification: {
                 type: "PAYMENT_GATEWAY",
                 parameters: {
                   gateway: "example",
-                  gatewayMerchantID: "exampleGatewayMerchantID",
+                  gatewayMerchantId: "exampleGatewayMerchantId",
                 },
               },
             },
           ],
           merchantInfo: {
-            merchantId: "511151115111",
-            merchantname: "Unknown",
+            merchantId: "12345678901234567890",
+            merchantName: "Demo Merchant",
           },
           transactionInfo: {
             totalPriceStatus: "FINAL",
-            totalPriceLabel: "TOTAL",
+            totalPriceLabel: "Total",
             totalPrice: "1",
             currencyCode: "INR",
-            countryCode: "India",
+            countryCode: "IN",
           },
           shippingAddressRequired: true,
-          callbackIntents: ["PAYMENT_AUTHORIZATION"],
+          callbackIntents: ["SHIPPING_ADDRESS", "PAYMENT_AUTHORIZATION"],
         }}
         onLoadPaymentData={(paymentRequest) => {
           console.log("Success", paymentRequest);
         }}
+        onPaymentAuthorized={(paymentData) => {
+          console.log("Payment Authorised Success", paymentData);
+          return { transactionState: "SUCCESS" };
+        }}
+        onPaymentDataChanged={(paymentData) => {
+          console.log("On Payment Data Changed", paymentData);
+          return {};
+        }}
+        existingPaymentMethodRequired="false"
+        buttonColor="black"
+        buttonType="Buy"
       />
     </div>
   );
