@@ -16,6 +16,38 @@ function App() {
         paymentRequest={{
           apiVersion: 2,
           apiVersionMinor: 0,
+          allowedPaymentMethods: [
+            {
+              type: "CARD",
+              parameters: {
+                allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                allowedCardNetworks: ["MASTERCARD", "VISA", "DISCOVER"],
+              },
+              tokenizationSpecification: {
+                type: "PAYMENT_GATEWAY",
+                parameters: {
+                  gateway: "example",
+                  gatewayMerchantID: "exampleGatewayMerchantID",
+                },
+              },
+            },
+          ],
+          merchantInfo: {
+            merchantId: "511151115111",
+            merchantname: "Unknown",
+          },
+          transactionInfo: {
+            totalPriceStatus: "FINAL",
+            totalPriceLabel: "TOTAL",
+            totalPrice: "1",
+            currencyCode: "INR",
+            countryCode: "India",
+          },
+          shippingAddressRequired: true,
+          callbackIntents: ["PAYMENT_AUTHORIZATION"],
+        }}
+        onLoadPaymentData={(paymentRequest) => {
+          console.log("Success", paymentRequest);
         }}
       />
     </div>
